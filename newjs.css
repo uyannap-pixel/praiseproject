@@ -1,0 +1,59 @@
+body{
+    margin: 0;
+    font-family: Arial;
+    padding: 0 5vw;
+    display: grid;
+    place-content: center;
+    height: 100vh;
+}
+
+.container{
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: fadeIn 1s forwards;
+    animation-delay: .3s;
+}
+@keyframes fadeIn {
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+h1{
+    font-weight: normal;
+    font-size: clamp(2rem, 5vw, 7rem);
+}
+button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    font-weight: bold;
+   font-family: Arial;
+
+   &:hover span{
+    transform: translateX(15px);
+    font-size: 40px;
+    font-weight: bolder;
+   }
+   &:hover .noo{
+    transform: translateX(-15px);
+    font-size: 40px;
+    font-weight: bolder;
+   }
+
+   p{
+        font-size: 17px;
+        font-family: Arial;
+
+        &:hover {
+            text-decoration: underline;
+        }
+   }
+   
+}
+

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Splitter</title>
+
+<style>
+/* ---------- RESET ---------- */
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ---------- BODY ---------- */
+body {
+  background: #cfeeee;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- CARD ---------- */
+.card {
+  background: #ffffff;
+  width: 700px;
+  border-radius: 20px;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+/* ---------- LEFT SIDE ---------- */
+.label {
+  font-size: 14px;
+  color: #5e7a7d;
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 5px;
+  border: none;
+  background: #f3f9fa;
+  text-align: right;
+}
+
+input:focus {
+  outline: 2px solid #26c2ad;
+}
+
+/* ---------- TIP BUTTONS ---------- */
+.tip-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.tip-btn {
+  background: #00494d;
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 5px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.tip-btn.active {
+  background: #26c2ad;
+  color: #00494d;
+}
+
+.tip-btn:hover {
+  background: #9fe8df;
+  color: #00494d;
+}
+
+.custom {
+  background: #f3f9fa;
+  color: #00494d;
+}
+
+/* ---------- RIGHT SIDE ---------- */
+.result {
+  background: #00494d;
+  border-radius: 15px;
+  padding: 30px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.row small {
+  color: #7f9c9f;
+}
+
+.amount {
+  font-size: 40px;
+  color: #26c2ad;
+}
+
+/* ---------- RESET BUTTON ---------- */
+.reset {
+  background: #26c2ad;
+  border: none;
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #00494d;
+}
+
+.reset:hover {
+  background: #9fe8df;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- LEFT -->
+  <div>
+    <div class="label">Bill</div>
+    <input type="number" id="bill" placeholder="0">
+
+    <br><br>
+
+    <div class="label">Select Tip %</div>
+    <div class="tip-grid">
+      <button class="tip-btn" data-tip="5">5%</button>
+      <button class="tip-btn" data-tip="10">10%</button>
+      <button class="tip-btn " data-tip="15">15%</button>
+      <button class="tip-btn" data-tip="25">25%</button>
+      <button class="tip-btn" data-tip="50">50%</button>
+      <input type="number" id="customTip" class="custom" placeholder="Custom">
+    </div>
+
+    <br><br>
+
+    <div class="label">Number of People</div>
+    <input type="number" id="people" placeholder="1">
+  </div>
+
+  <!-- RIGHT -->
+  <div class="result">
+    <div>
+      <div class="row">
+        <div>
+          <div>Tip Amount</div>
+          <small>/ person</small>
+        </div>
+        <div class="amount" id="tipAmount">$0.00</div>
+      </div>
+
+      <div class="row">
+        <div>
+          <div>Total</div>
+          <small>/ person</small>
+        </div>
+        <div class="amount" id="totalAmount">$0.00</div>
+      </div>
+    </div>
+
+    <button class="reset" id="reset">RESET</button>
+  </div>
+
+</div>
+
+<script>
+let bill = document.getElementById("bill");
+let people = document.getElementById("people");
+let tipButtons = document.querySelectorAll(".tip-btn");
+let customTip = document.getElementById("customTip");
+
+let tipAmountEl = document.getElementById("tipAmount");
+let totalAmountEl = document.getElementById("totalAmount");
+
+let resetBtn = document.getElementById("reset");
+
+ let tipPercent = 15;
+
+/* ---------- TIP BUTTON CLICK ---------- */
+tipButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    tipButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    tipPercent = btn.dataset.tip;
+    customTip.value = "";
+    calculate();
+  });
+});
+
+/* ---------- CUSTOM TIP ---------- */
+customTip.addEventListener("input", () => {
+  tipButtons.forEach(b => b.classList.remove("active"));
+  tipPercent = customTip.value 
+  calculate();
+});
+
+/* ---------- INPUT EVENTS ---------- */
+bill.addEventListener("input", calculate);
+people.addEventListener("input", calculate);
+
+/* ---------- CALCULATION ---------- */
+function calculate() {
+  let billValue = parseFloat(bill.value);
+  let peopleValue = parseFloat(people.value);
+
+  if (!billValue || !peopleValue || peopleValue === 0) {
+    tipAmountEl.textContent = "$0.00";
+    totalAmountEl.textContent = "$0.00";
+    return;
+  }
+
+  let tipTotal = billValue * (tipPercent / 100);
+  let tipPerPerson = tipTotal / peopleValue;
+  let totalPerPerson = (billValue + tipTotal) / peopleValue;
+
+  tipAmountEl.textContent = "$" + tipPerPerson.toFixed(2);
+  totalAmountEl.textContent = "$" + totalPerPerson.toFixed(2);
+}
+
+/* ---------- RESET ---------- */
+resetBtn.addEventListener("click", () => {
+  bill.value = "";
+  people.value = "";
+  customTip.value = "";
+  tipPercent = 15;
+
+  tipButtons.forEach(b => b.classList.remove("active"));
+  tipButtons[2].classList.add("active");
+
+  tipAmountEl.textContent = "$0.00";
+  totalAmountEl.textContent = "$0.00";
+});
+</script>
+
+</body>
+</html>

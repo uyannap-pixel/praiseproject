@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="veiwpot" content="width=device-width, initialscale=1.0">
+        <title>splitter calculator</title>
+
+        <link rel="stylesheet" href="cal.css">
+    </head>
+    <body>
+        <div class="wrapper">
+            <img src="logo.svg" alt="logo" class="logo">
+            <div class="container">
+                <div class="left">
+
+                    <label for="input"> Bill</label>
+                    <div class="bill">
+                        <img class="img" src="icon-dollar.svg" alt="dollar sign">
+                        <input id="bill" type="number" placeholder="0" class="bill">
+                    </div>
+
+                    <label> Select Tip %</label>
+                    <div class="tip-button">
+                        <button class="tip" data-tip="5" >5%</button>
+                        <button class="tip" data-tip="10" >10%</button>
+                        <button class="tip" data-tip="15" >15%</button>
+                        <button class="tip" data-tip="25"  >25%</button>
+                        <button class="tip" data-tip="50"  >50%</button>
+                        <input id="custom-tip" type="text" placeholder="Custom" class="custom">
+                    </div>
+                     
+                    <label for="input">Number of people</label>
+                    <div class="bill">
+                        <img src="icon-person.svg" alt="peopl logo">
+                        <input id="people" type="number" placeholder="0" class="bill">
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="result-row">
+                        <div class="text">
+                            <div class="label">
+                                <h3>Tip-Amount</h3>
+                                <p>/ person</p>
+                            </div>
+                            <div class="figure">
+                               <h2 id="tip-amount">$0.00</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-row">
+                        <div class="text">
+                            <div class="label">
+                                <h3>Total</h3>
+                                <p>/ person</p>
+                            </div>
+                        
+                            <div class="figure">
+                                <h2 id="total">$0.00</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="reset">Reset</button>
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let bill = document.getElementById("bill");
+            let people = document.getElementById("people");
+            let tipButtons = document.querySelectorAll(".tip");
+            let customTip = document.getElementById("custom-tip");
+
+            let tipAmountEl = document.getElementById("tip-amount");
+            let totalAmountEl = document.getElementById("total");
+
+            let resetBtn = document.getElementById("reset");
+
+            let tipPercent = 15;
+
+            /* ---------- TIP BUTTON CLICK ---------- */
+            tipButtons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    tipButtons.forEach(b => b.classList.remove("active-btn"));
+                    btn.classList.add("active-btn");
+                    tipPercent = btn.dataset.tip;
+                    customTip.value = "";
+                    calculate();
+                })
+            })
+
+            /* ---------- CUSTOM TIP ---------- */
+            customTip.addEventListener("input", () => {
+                tipButtons.forEach(b => b.classList.remove("active-btn"));
+                tipPercent = customTip.value;
+                calculate();
+            });
+
+            /* ---------- INPUT EVENTS ---------- */
+            bill.addEventListener("input", calculate);
+            people.addEventListener("input", calculate);
+
+            /* ---------- CALCULATION ---------- */
+            function calculate() {
+                let billValue = parseFloat(bill.value);
+                let peopleValue = parseInt(people.value);
+
+                if (!billValue || !peopleValue || peopleValue === 0) {
+                    tipAmountEl.textContent = "$0.00";
+                    totalAmountEl.textContent = "$0.00";
+                    return;
+                }
+
+                let tipTotal = ( tipPercent / billValue) * 100 ;
+                let tipPerPerson = tipTotal / peopleValue;
+                let totalPerPerson = (billValue + tipTotal) / peopleValue;
+
+                tipAmountEl.textContent = "$" + tipPerPerson.toFixed(2);
+                totalAmountEl.textContent = "$" + totalPerPerson.toFixed(2);
+            }
+
+            /* ---------- RESET ---------- */
+            resetBtn.addEventListener("click", () => {
+                bill.value = "";
+                people.value = "";
+                customTip.value = ""; 
+                // tipPercent = 15;
+
+                tipButtons.forEach(b => b.classList.remove("active-btn"));
+                tipButtons[2].classList.add("active-btn");
+
+                tipAmountEl.textContent = "$0.00";
+                totalAmountEl.textContent = "$0.00";
+            });
+        </script>
+    </body>
+</html>

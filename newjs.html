@@ -1,0 +1,47 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="newjs.css">
+ </head>
+ <body>
+    
+
+    <div class="container">
+        <h1 id="title"> 'it is absolutely necessary to keep improving' </h1>
+
+        <button id="change">
+            <p>Give me another tips </p>
+            <span > >> </span>
+        </button>
+
+        <button id="backBtn" > 
+            <span class="noo"> << </span>
+            <p> back </p> 
+    </button>
+    </div>
+
+    <script>
+        const originalQuote = ' it is necessary to keep improving'
+        const newQuote = ' because if you dont, you wll remain stagnant'
+        const quote = document.getElementById('title')
+        const change = document.getElementById('change')
+        const back = document.getElementById('backBtn')
+
+        change.addEventListener('click', changeQuote)
+
+        function changeQuote() {
+            quote.innerText = newQuote
+        }
+
+        back.addEventListener('click', revertQuote)
+
+        function revertQuote() {
+            quote.innerText = originalQuote
+        }
+        
+    </script>
+ </body>
+ </html>
