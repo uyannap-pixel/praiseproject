@@ -111,7 +111,7 @@
                     return;
                 }
 
-                let tipTotal = ( tipPercent / billValue) * 100 ;
+                let tipTotal = (billValue * (tipPercent / 100));
                 let tipPerPerson = tipTotal / peopleValue;
                 let totalPerPerson = (billValue + tipTotal) / peopleValue;
 
