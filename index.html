@@ -112,11 +112,11 @@
                 }
 
                 let tipTotal = (billValue * (tipPercent / 100));
-                let tipPerPerson = tipTotal / peopleValue;
-                let totalPerPerson = (billValue + tipTotal) / peopleValue;
+                let tipPerPerson = tipTotal ;
+                let totalPerPerson = tipPerPerson / peopleValue;
 
-                tipAmountEl.textContent = "$" + tipPerPerson.toFixed(2);
-                totalAmountEl.textContent = "$" + totalPerPerson.toFixed(2);
+                tipAmountEl.textContent = "$" + totalPerPerson.toFixed(2); 
+                totalAmountEl.textContent = "$" + tipPerPerson.toFixed(2);
             }
 
             /* ---------- RESET ---------- */
